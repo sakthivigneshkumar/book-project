@@ -18,8 +18,11 @@
 package com.karankumar.bookproject.backend.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * A {@code Author} object represents a single Author with its corresponding metadata, such as a first name, last name
@@ -35,6 +38,9 @@ public class Author extends BaseEntity {
     @NotNull
     @NotEmpty
     private String lastName;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    private List<Book> books;
 
     public Author() {
     }

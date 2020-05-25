@@ -42,8 +42,8 @@ public class Book extends BaseEntity {
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
     private Author author;
 
     @ManyToMany(fetch = FetchType.EAGER)
