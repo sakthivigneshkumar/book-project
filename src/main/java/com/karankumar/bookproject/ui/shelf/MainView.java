@@ -43,6 +43,8 @@ public class MainView extends VerticalLayout {
     private BookForm bookForm;
     private BookService bookService;
 
+    private ShelfService shelfService;
+
     private Grid<Book> bookGrid = new Grid<>(Book.class);
     private final TextField filterByTitle;
     private final ComboBox<Shelf.ShelfName> whichShelf;
@@ -52,10 +54,12 @@ public class MainView extends VerticalLayout {
 
     public MainView(BookService bookService, ShelfService shelfService) {
         this.bookService = bookService;
+        this.shelfService = shelfService;
+
         shelves = shelfService.findAll();
 
         whichShelf = new ComboBox<>();
-        configureChosenShelf(shelves);
+        configureChosenShelf();
 
         filterByTitle = new TextField();
         configureFilter();
@@ -85,7 +89,7 @@ public class MainView extends VerticalLayout {
                         });
     }
 
-    private void configureChosenShelf(List<Shelf> shelves) {
+    private void configureChosenShelf() {
         whichShelf.setPlaceholder("Select shelf");
         whichShelf.setItems(Shelf.ShelfName.values());
         whichShelf.setRequired(true);
@@ -111,22 +115,45 @@ public class MainView extends VerticalLayout {
         }
 
         // Find the shelf that matches the chosen shelf's name
-        Shelf selectedShelf = null;
-        for (Shelf shelf : shelves) {
-            if (shelf.getName().equals(chosenShelf)) {
-                selectedShelf = shelf;
-                break;
-            }
-        }
+//        Shelf selectedShelf = null;
+//        for (Shelf shelf : shelves) {
+//            if (shelf.getName().equals(chosenShelf)) {
+//                selectedShelf = shelf;
+//                break;
+//            }
+//        }
+
+        List<Book> booksInShelf = shelfService.getBooksInShelf(chosenShelf);
+
+        System.out.println("here");
+
+//        bookGrid.setItems(shelfService.getBooksInShelf(chosenShelf));
 
         // only set the grid if the book shelf name was matched
-        if (selectedShelf != null) {
-            if (bookTitle != null && !bookTitle.isEmpty()) {
-                bookGrid.setItems(bookService.findAll(bookTitle));
-            } else {
-                bookGrid.setItems(selectedShelf.getBooks());
-            }
-        }
+//        if (selectedShelf != null) {
+//            if (bookTitle != null && !bookTitle.isEmpty()) {
+//                bookGrid.setItems(bookService.findAll(bookTitle));
+//            } else {
+//                bookGrid.setItems(shelfService.getBooksInShelf(chosenShelf));
+
+//                bookGrid.setItems(bookService.f);
+
+//                bookGrid.setItems(selectedShelf.getBooks());
+
+//                System.out.println("\nretrieving books");
+//                List<Book> books = selectedShelf.getBooks();
+//
+//                if (books != null && !books.isEmpty()) {
+//                    System.out.println("All good");
+//                } else if (books == null) {
+//                    System.out.println("null books");
+//                } else if (books.isEmpty()) {
+//                    System.out.println("empty books");
+//                    System.out.println("Chosen shelf: " + chosenShelf);
+//                    System.out.println("Selected shelf: " + selectedShelf.getName());
+//                }
+//            }
+//        }
     }
 
     private void configureFilter() {

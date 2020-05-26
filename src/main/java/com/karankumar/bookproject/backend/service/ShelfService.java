@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -74,6 +75,13 @@ public class ShelfService extends BaseService<Shelf, Long> {
         return shelfRepository.findAll();
     }
 
+    public List<Book> getBooksInShelf(Shelf.ShelfName shelfName) {
+        if (shelfName == null) {
+            return new ArrayList<>();
+        }
+        return shelfRepository.getBooksInShelf(shelfName.toString());
+    }
+
     @Override
     public void delete(Shelf shelf) {
         shelfRepository.delete(shelf);
@@ -102,6 +110,8 @@ public class ShelfService extends BaseService<Shelf, Long> {
                   })
               .collect(Collectors.toList()));
         }
+
+        System.out.println("Author count: " + authorRepository.count());
 
         if (bookRepository.count() == 0) {
             Random random = new Random(0);
@@ -141,19 +151,26 @@ public class ShelfService extends BaseService<Shelf, Long> {
                     }).collect(Collectors.toList()));
         }
 
+        System.out.println("Book count: " + bookRepository.count());
+
         if (shelfRepository.count() == 0) {
-            Random random = new Random(0);
             List<Book> books = bookRepository.findAll();
             shelfRepository.saveAll(
-                    Stream.of("To read", "Reading", "Read")
+                    Stream.of(Shelf.ShelfName.values())
                         .map(name -> {
-                            Shelf.ShelfName[] allShelves = Shelf.ShelfName.values();
+                            System.out.println("Shelf name in Shelf Service: " + name);
+                            if (books.isEmpty()) {
+                                System.out.println("empty books in ShelfService");
+                            } else {
+                                System.out.println("neither null nor empty in ShelfService");
+                            }
 
-                            Shelf.ShelfName shelfName = allShelves[random.nextInt(allShelves.length)];
-                            Shelf shelf = new Shelf(shelfName);
+                            Shelf shelf = new Shelf(name);
                             shelf.setBooks(books);
                             return shelf;
                     }).collect(Collectors.toList()));
         }
+
+        System.out.println("Shelf count: " + bookRepository.count());
     }
 }

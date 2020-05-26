@@ -22,7 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -36,7 +36,11 @@ public class Shelf extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ShelfName name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    private List<Book> books;
+
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelf")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shelf")
     private List<Book> books;
 
     public enum ShelfName {
@@ -72,6 +76,11 @@ public class Shelf extends BaseEntity {
     }
 
     public List<Book> getBooks() {
+        if (books.isEmpty()) {
+            System.out.println("books are empty");
+        } else {
+            System.out.println("Books are not empty");
+        }
         return books;
     }
 

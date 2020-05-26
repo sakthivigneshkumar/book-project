@@ -17,11 +17,13 @@
 */
 package com.karankumar.bookproject.backend.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Set;
 
 /**
  * A {@code Book} object represents a single book with its corresponding metadata, such as an Author, genre and rating
@@ -46,10 +48,12 @@ public class Book extends BaseEntity {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Shelf> shelves;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    private Set<Shelf> shelves;
 
-    @ManyToOne
+//    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shelf_id")
     private Shelf shelf;
 
     public Book() {
