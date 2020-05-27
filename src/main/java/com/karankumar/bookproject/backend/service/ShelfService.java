@@ -75,11 +75,19 @@ public class ShelfService extends BaseService<Shelf, Long> {
         return shelfRepository.findAll();
     }
 
-    public List<Book> getBooksInShelf(Shelf.ShelfName shelfName) {
+//    public List<Book> getBooksInShelf(Shelf.ShelfName shelfName) {
+//        if (shelfName == null) {
+//            return new ArrayList<>();
+//        }
+//        return shelfRepository.getBooksInShelf(shelfName.toString());
+//    }
+
+    public List<Shelf> getBooksInShelf(Shelf.ShelfName shelfName) {
         if (shelfName == null) {
             return new ArrayList<>();
         }
-        return shelfRepository.getBooksInShelf(shelfName.toString());
+//        return shelfRepository.getBooksInShelf(shelfName.toString());
+        return shelfRepository.getBooksInShelf(shelfName);
     }
 
     @Override
@@ -110,8 +118,6 @@ public class ShelfService extends BaseService<Shelf, Long> {
                   })
               .collect(Collectors.toList()));
         }
-
-        System.out.println("Author count: " + authorRepository.count());
 
         if (bookRepository.count() == 0) {
             Random random = new Random(0);
@@ -151,18 +157,16 @@ public class ShelfService extends BaseService<Shelf, Long> {
                     }).collect(Collectors.toList()));
         }
 
-        System.out.println("Book count: " + bookRepository.count());
-
         if (shelfRepository.count() == 0) {
             List<Book> books = bookRepository.findAll();
             shelfRepository.saveAll(
                     Stream.of(Shelf.ShelfName.values())
                         .map(name -> {
-                            System.out.println("Shelf name in Shelf Service: " + name);
+                            System.out.println("ShelfService: Shelf name = " + name);
                             if (books.isEmpty()) {
-                                System.out.println("empty books in ShelfService");
+                                System.out.println("ShelfService: empty books in ShelfService");
                             } else {
-                                System.out.println("neither null nor empty in ShelfService");
+                                System.out.println("ShelfService: neither null nor empty in ShelfService");
                             }
 
                             Shelf shelf = new Shelf(name);
@@ -170,7 +174,5 @@ public class ShelfService extends BaseService<Shelf, Long> {
                             return shelf;
                     }).collect(Collectors.toList()));
         }
-
-        System.out.println("Shelf count: " + bookRepository.count());
     }
 }

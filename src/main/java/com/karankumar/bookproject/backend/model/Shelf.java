@@ -77,7 +77,7 @@ public class Shelf extends BaseEntity {
 
     public List<Book> getBooks() {
         if (books.isEmpty()) {
-            System.out.println("books are empty");
+            System.out.println("Shelf: books are empty");
         } else {
             System.out.println("Books are not empty");
         }

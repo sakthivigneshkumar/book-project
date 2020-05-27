@@ -17,7 +17,6 @@
 */
 package com.karankumar.bookproject.backend.repository;
 
-import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Shelf;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,7 +25,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ShelfRepository extends JpaRepository<Shelf, Long> {
-    @Query("select s from Shelf s " +
-            "where lower(s.name) like lower(concat('%', :shelfName, '%'))")
-    List<Book> getBooksInShelf(@Param("shelfName") String shelfName);
+//    @Query("select s from Shelf s where lower(s.name) like lower(concat('%', :shelfName, '%'))")
+//    List<Book> getBooksInShelf(@Param("shelfName") String shelfName);
+
+//    @Query("select s from Shelf s where s.name = :shelfName")
+//    List<Shelf> getBooksInShelf(@Param("shelfName") String shelfName);
+
+    @Query("SELECT s FROM Shelf s WHERE s.name = :shelfName")
+    List<Shelf> getBooksInShelf(@Param("shelfName") Shelf.ShelfName shelfName);
 }

@@ -123,9 +123,27 @@ public class MainView extends VerticalLayout {
 //            }
 //        }
 
-        List<Book> booksInShelf = shelfService.getBooksInShelf(chosenShelf);
+        // this method call should return one shelf
+        List<Shelf> shelves = shelfService.getBooksInShelf(chosenShelf);
+        if (shelves.size() == 0) {
+            System.out.println("MainView: shelf size = 0");
+            return;
+        }
+        Shelf shelf = shelves.get(0);
 
-        System.out.println("here");
+        if (shelf != null) {
+            System.out.println("\nMainView: shelf not null");
+            bookGrid.setItems(shelf.getBooks());
+
+            if (shelf.getBooks() == null) {
+                System.out.println("MainView: null book");
+            } else if (shelf.getBooks().isEmpty()) {
+                System.out.println("MainView: empty books");
+            }
+
+        } else {
+            System.out.println("MainView: shelf null");
+        }
 
 //        bookGrid.setItems(shelfService.getBooksInShelf(chosenShelf));
 
